@@ -1,0 +1,1 @@
+qemu-system-aarch64 -machine raspi4b -nographic -kernel ./build/kernel8.img
