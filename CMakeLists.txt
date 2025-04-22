@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.22)
 project(raspi-gba LANGUAGES C ASM) # ASM must set, or boot.S wont be compiled
 
-set(AARCH64_TOOLCHAIN_DIR /opt/toolchains/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin)
-set(CMAKE_C_COMPILER ${AARCH64_TOOLCHAIN_DIR}/aarch64-none-elf-gcc)
-set(CMAKE_ASM_COMPILER ${AARCH64_TOOLCHAIN_DIR}/aarch64-none-elf-gcc)
-set(CMAKE_LINKER ${AARCH64_TOOLCHAIN_DIR}/aarch64-none-elf-ld)
-set(CMAKE_OBJCOPY ${AARCH64_TOOLCHAIN_DIR}/aarch64-none-elf-objcopy)
+# set(AARCH64_TOOLCHAIN_DIR /opt/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin/)
+set(CMAKE_C_COMPILER ${AARCH64_TOOLCHAIN_DIR}aarch64-none-elf-gcc)
+set(CMAKE_ASM_COMPILER ${AARCH64_TOOLCHAIN_DIR}aarch64-none-elf-gcc)
+set(CMAKE_LINKER ${AARCH64_TOOLCHAIN_DIR}aarch64-none-elf-ld)
+set(CMAKE_OBJCOPY ${AARCH64_TOOLCHAIN_DIR}aarch64-none-elf-objcopy)
 
 set(TARGET_KERNEL kernel8)
 
