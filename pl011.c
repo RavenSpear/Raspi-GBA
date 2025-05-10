@@ -1,18 +1,37 @@
-#include <stdint.h>
 #include <stddef.h>
 #include "pl011.h"
+#include "mmio.h"
 
-inline volatile uint32_t mmio_read(long reg)
+#define GPIO_BASE           PERIPHERAL_BASE + 0x200000
+#define GPFSEL0             GPIO_BASE + 0x000
+#define GPFSEL1             GPIO_BASE + 0x004
+#define GPSET0              GPIO_BASE + 0x01c
+#define GPCLR0              GPIO_BASE + 0x028
+#define GPPUPPDN0           GPIO_BASE + 0x0e4
+
+#define UART0_BASE          PERIPHERAL_BASE + 0x201000
+#define UART0_DR            UART0_BASE + 0x000
+#define UART0_FR            UART0_BASE + 0x018
+#define UART0_IBRD          UART0_BASE + 0x024
+#define UART0_FBRD          UART0_BASE + 0x028
+#define UART0_LCR           UART0_BASE + 0x02c
+#define UART0_CR            UART0_BASE + 0x030
+#define UART0_IMSC          UART0_BASE + 0x038
+#define UART0_DMACR         UART0_BASE + 0x048
+
+static int strlen(const char* ptr)
 {
-    return *(volatile uint32_t *)(reg);
+    int i = 0;
+    while(*ptr != 0)
+    {
+        i++;
+        ptr += 1;
+    }
+
+    return i;
 }
 
-inline void mmio_write(const long reg, uint32_t val)
-{
-    *(volatile uint32_t *)(reg) = val;
-}
-
-void config_gpio_uart0(void)
+static void config_gpio_uart0(void)
 {
     uint32_t reg_read = mmio_read(GPFSEL1);
     reg_read &= ~(7<<12);                   /* clean gpio14 */
@@ -25,7 +44,7 @@ void config_gpio_uart0(void)
     mmio_write(GPPUPPDN0, reg_read & ~((3<<28)|(3<<30))); /* set 00 */
 }
 
-void is_tx_complete(void)
+static void is_tx_complete(void)
 {
     while (((mmio_read(UART0_FR) >> 3U) & 1U) != 0) {}
 }
@@ -62,18 +81,6 @@ void uart_init()
 
     // Finally enable UART    
     mmio_write(UART0_CR, 0x301U);
-}
-
-int strlen(const char* ptr)
-{
-    int i = 0;
-    while(*ptr != 0)
-    {
-        i++;
-        ptr += 1;
-    }
-
-    return i;
 }
 
 void pl011_uart_puts(const char *data)

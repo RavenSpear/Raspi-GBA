@@ -1,7 +1,15 @@
-extern volatile unsigned int mbox[36];
+#ifndef __MB_H
+#define __MB_H
+
+#include "reg.h"
+
+extern volatile uint32_t mbox[36];
 
 enum {
-    MBOX_REQUEST  = 0
+    MBOX_REQUEST   = 0,
+    MBOX_RESPONSE  = 0x80000000,
+    MBOX_FULL      = 0x80000000,
+    MBOX_EMPTY     = 0x40000000
 };
 
 enum {
@@ -31,4 +39,6 @@ enum {
     MBOX_TAG_LAST       = 0
 };
 
-unsigned int mbox_call(unsigned char ch);
+uint32_t mbox_call(uint8_t ch);
+
+#endif

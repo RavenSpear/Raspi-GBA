@@ -15,7 +15,7 @@ set(TARGET_KERNEL kernel8)
 # -mstrict-align, strictly align
 add_compile_options(-Wall -O2 -ffreestanding -nostdlib -nostartfiles -mstrict-align)
 
-add_executable(${TARGET_KERNEL} boot.S kernel.c pl011.c)
+add_executable(${TARGET_KERNEL} boot.S kernel.c pl011.c fb.c mb.c)
 # add link scripts
 set_target_properties(
     ${TARGET_KERNEL} PROPERTIES 
