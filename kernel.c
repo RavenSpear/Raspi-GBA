@@ -1,4 +1,5 @@
 #include "fb.h"
+#include "kprintf.h"
 #include "pl011.h"
 
 void main(void)
@@ -6,7 +7,8 @@ void main(void)
     uart_init();
     fb_init();
 
-    pl011_uart_puts("Helloworld!\n");
+    kprintf("Helloworld: %d\n", 10);
+    kprintf("Helloworld: %u\n123", 0xffffffff);
 
     drawRect(150,150,400,400,0x03,0);
     drawRect(300,300,350,350,0x2e,1);

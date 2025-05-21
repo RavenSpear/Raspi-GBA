@@ -13,9 +13,11 @@ set(TARGET_KERNEL kernel8)
 # -nostdlib, dont link stdlib
 # -nostartfiles, dont use standard startup file, such as crt0.o
 # -mstrict-align, strictly align
-add_compile_options(-Wall -O2 -ffreestanding -nostdlib -nostartfiles -mstrict-align)
+add_compile_options(-g)
+add_compile_options(-Wall -Werror)
+add_compile_options(-O2 -ffreestanding -nostdlib -nostartfiles -mstrict-align)
 
-add_executable(${TARGET_KERNEL} boot.S kernel.c pl011.c fb.c mb.c)
+add_executable(${TARGET_KERNEL} boot.S kernel.c pl011.c fb.c mb.c kprintf.c)
 # add link scripts
 set_target_properties(
     ${TARGET_KERNEL} PROPERTIES 

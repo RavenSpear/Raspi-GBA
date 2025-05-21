@@ -19,18 +19,6 @@
 #define UART0_IMSC          UART0_BASE + 0x038
 #define UART0_DMACR         UART0_BASE + 0x048
 
-static int strlen(const char* ptr)
-{
-    int i = 0;
-    while(*ptr != 0)
-    {
-        i++;
-        ptr += 1;
-    }
-
-    return i;
-}
-
 static void config_gpio_uart0(void)
 {
     uint32_t reg_read = mmio_read(GPFSEL1);
@@ -49,7 +37,7 @@ static void is_tx_complete(void)
     while (((mmio_read(UART0_FR) >> 3U) & 1U) != 0) {}
 }
 
-void uart_init()
+void uart_init(void)
 {
     uint32_t reg_read;
     config_gpio_uart0();
@@ -83,18 +71,8 @@ void uart_init()
     mmio_write(UART0_CR, 0x301U);
 }
 
-void pl011_uart_puts(const char *data)
+void pl011_uart_putc(char c)
 {
-    size_t len = strlen(data);
-
     is_tx_complete();
-
-    for (size_t i = 0; i < len; ++i) {
-        if (data[i] == '\n') {
-            mmio_write(UART0_DR, '\r');
-            is_tx_complete();
-        }
-        mmio_write(UART0_DR, data[i]);
-        is_tx_complete();
-    }
+    mmio_write(UART0_DR, c);
 }
